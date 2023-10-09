@@ -411,8 +411,13 @@ void HelloTriangleApplication::createRenderPass() {
 }
 
 void HelloTriangleApplication::createGraphicsPipeline() {
+#ifdef WIN
+    auto vertShaderCode = readFile("D://Learning//Vulkan//shaders//win//vert.spv");
+    auto fragShaderCode = readFile("D://Learning//Vulkan//shaders//win//frag.spv");
+#else
     auto vertShaderCode = readFile("/Users/lingadan/Code/Practice/Vulkan/shaders/vert.spv");
     auto fragShaderCode = readFile("/Users/lingadan/Code/Practice/Vulkan/shaders/frag.spv");
+#endif // WIN
     
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
@@ -800,8 +805,10 @@ std::vector<const char*> HelloTriangleApplication::getRequiredExtensions() {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
     
+#ifndef WIN
     // From SDK 1.3.216 onwards
     extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+#endif // !WIN
     
     // https://vulkan.lunarg.com/doc/view/1.3.236.0/mac/1.3-extensions/vkspec.html#VUID-vkCreateDevice-ppEnabledExtensionNames-01387
     extensions.push_back("VK_KHR_get_physical_device_properties2");

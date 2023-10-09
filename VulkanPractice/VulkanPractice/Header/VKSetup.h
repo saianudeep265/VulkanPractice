@@ -69,7 +69,9 @@ const std::vector<const char*> validationLayers = {
 
 const std::vector<const char*> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+#ifndef WIN
     "VK_KHR_portability_subset"     // https://vulkan.lunarg.com/doc/view/1.3.236.0/mac/1.3-extensions/vkspec.html#VUID-VkDeviceCreateInfo-pProperties-04451
+ #endif // !WIN
 };
 
 struct QueueFamilyIndices {
