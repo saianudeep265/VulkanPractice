@@ -151,8 +151,10 @@ void HelloTriangleApplication::createInstance() {
         createInfo.pNext= nullptr;
     }
     
+#ifndef WIN
     // From SDK 1.3.216 onwards
     createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+#endif // !WIN
     
     // create instance
     if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
@@ -808,10 +810,10 @@ std::vector<const char*> HelloTriangleApplication::getRequiredExtensions() {
 #ifndef WIN
     // From SDK 1.3.216 onwards
     extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
-#endif // !WIN
-    
+
     // https://vulkan.lunarg.com/doc/view/1.3.236.0/mac/1.3-extensions/vkspec.html#VUID-vkCreateDevice-ppEnabledExtensionNames-01387
     extensions.push_back("VK_KHR_get_physical_device_properties2");
+#endif // !WIN
     
     return extensions;
 }
