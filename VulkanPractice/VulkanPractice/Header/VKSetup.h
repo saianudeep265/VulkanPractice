@@ -89,6 +89,8 @@ struct SwapChainSupportDetails {
     std::vector<VkPresentModeKHR> presentModes;
 };
 
+const int MAX_FRAMES_IN_FLIGHT = 2;
+
 class HelloTriangleApplication {
 public:
     HelloTriangleApplication() = default;
@@ -120,6 +122,9 @@ private:
     void createCommandPool();
     void createCommandBuffer();
     void createSyncObjects();
+
+    void cleanupSwapChain();
+    void recreateSwapChain();
     
     // drawing
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
@@ -165,6 +170,9 @@ private:
     
     // Graphics pipeline
     VkShaderModule createShaderModule(const std::vector<char>& code);
+
+    // Callback function : Resize window
+    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     
     // Helper functions end
     
@@ -183,6 +191,8 @@ private:
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
+
+    uint32_t currentFrame = 0;
     
     std::vector<VkImageView> swapChainImageViews;
     
@@ -193,11 +203,13 @@ private:
     std::vector<VkFramebuffer> swapChainFramebuffers;
     
     VkCommandPool commandPool;
-    VkCommandBuffer commandBuffer;
+    std::vector<VkCommandBuffer> commandBuffers;
     
-    VkSemaphore imageAvailableSemaphore;
-    VkSemaphore renderFinishedSemaphore;
-    VkFence inFlightFence;
+    std::vector<VkSemaphore> imageAvailableSemaphores;
+    std::vector<VkSemaphore> renderFinishedSemaphores;
+    std::vector<VkFence> inFlightFences;
+
+    bool framebufferResized = false;
     
     float queuePriority = 1.0f;
 };
